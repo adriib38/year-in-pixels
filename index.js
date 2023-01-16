@@ -1,7 +1,6 @@
 let diaDelAnyo = 0;
 let diasRestantes = 0;
 
-
 //Función para generar la tabla del calendario
 function generateCalendar() {
     var table = document.getElementById("calendar");
@@ -15,7 +14,7 @@ function generateCalendar() {
         cell.innerText = i;
         cell.id = "d" + i;
         cell.classList.add("cell-day");
-        
+        cell.setAttribute("onclick", "diaSeleccionado(" + i + ")");
 
         table.appendChild(cell);
 
@@ -48,16 +47,22 @@ function generateRandomColor() {
 }
 
 //Pintar
-for (var i = 1; i <= 365; i++) {
-    var cell = document.getElementById("d" + i);
-    if (i <= currentDay) {
-        cell.style.backgroundColor = '#a8f3a8';
-        cell.style.color = 'black';
-        diaDelAnyo = i;
-        diasRestantes = 365 - diaDelAnyo;
-        calcularPorcentaje(i);
+function pintar(){
+    for (var i = 1; i <= 365; i++) {
+        var cell = document.getElementById("d" + i);
+        if (i <= currentDay) {
+            cell.style.backgroundColor = '#a8f3a8';
+            cell.style.color = 'black';
+            diaDelAnyo = i;
+            diasRestantes = 365 - diaDelAnyo;
+            calcularPorcentaje(i);
+        }else{
+            cell.style.backgroundColor = '#7C7D9F';
+       
+        }
     }
 }
+pintar();
 
 //Calcular el porcentaje
 function calcularPorcentaje(i) {
@@ -65,3 +70,23 @@ function calcularPorcentaje(i) {
     let span = document.getElementById("porcentaje");
     span.innerHTML = porcentaje.toFixed(3) + "%";
 }
+
+function diaSeleccionado(i){
+    //Pintar todas las celdas de verde
+    pintar();
+
+    let fechaDelDia = new Date(2023, 0, i);
+
+    let diaSeleccionado = document.getElementById("dia-seleccionado");
+
+    diaSeleccionado.innerHTML = fechaDelDia.toLocaleDateString();
+
+    //Cambiar color de la celda seleccionada y quitar el color de la celda anterior
+    let celdaAnterior = document.getElementById("d" + diaDelAnyo);
+    celdaAnterior.style.backgroundColor = '#a8f3a8';
+    
+    let celdaSeleccionada = document.getElementById("d" + i);
+    celdaSeleccionada.style.backgroundColor = '#CE5937';
+}
+
+diaSeleccionado(diaDelAnyo);
